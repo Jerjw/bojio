@@ -1,8 +1,8 @@
 import 'package:bojio/screens/home_screen.dart';
+import 'package:bojio/screens/login_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:bojio/widgets/login_widget.dart';
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -35,12 +35,12 @@ class MainPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: StreamBuilder<User?>(
-        stream: FirebaseAuth.instance.authStateChanges(),
+        stream: FirebaseAuth.instance.idTokenChanges(),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             return const HomeScreen();
           } else {
-            return const LoginWidget();
+            return const LoginScreen();
           }
         },
       ),

@@ -5,9 +5,8 @@ import 'package:bojio/screens/profile_screen.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
-
-
-
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:bojio/screens/login_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -15,9 +14,6 @@ class HomeScreen extends StatefulWidget {
   @override
   _HomeScreenState createState() => _HomeScreenState();
 }
-
-
-
 
 class _HomeScreenState extends State<HomeScreen> {
   int currentIndex = 0;
@@ -30,6 +26,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      extendBodyBehindAppBar: false,
       appBar: AppBar(
         title: Text('Bojio'),
       ),
@@ -42,29 +39,27 @@ class _HomeScreenState extends State<HomeScreen> {
         onTap: (index) => setState(() => currentIndex = index),
         items: const [
           BottomNavigationBarItem(
-              icon: Icon(Icons.home),
-              label: 'Home',
-              backgroundColor: Colors.blue,
+            icon: Icon(Icons.home),
+            label: 'Home',
+            backgroundColor: Colors.blue,
           ),
           BottomNavigationBarItem(
-              icon: Icon(Icons.chat_bubble),
-              label: 'Chat',
-              backgroundColor: Colors.red,
+            icon: Icon(Icons.chat_bubble),
+            label: 'Chat',
+            backgroundColor: Colors.red,
           ),
           BottomNavigationBarItem(
-              icon: Icon(Icons.event_available),
-              label: 'Notifications',
-              backgroundColor: Colors.green,
+            icon: Icon(Icons.event_available),
+            label: 'Notifications',
+            backgroundColor: Colors.green,
           ),
           BottomNavigationBarItem(
-              icon: Icon(Icons.person),
-              label: 'Profile',
-              backgroundColor: Colors.pink,
+            icon: Icon(Icons.person),
+            label: 'Profile',
+            backgroundColor: Colors.pink,
           )
         ],
       ),
     );
   }
 }
-
-
