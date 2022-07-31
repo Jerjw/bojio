@@ -22,6 +22,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
   TextEditingController _emailTextController = TextEditingController();
   TextEditingController _nameTextController = TextEditingController();
   TextEditingController _dateTextController = TextEditingController();
+
+  CollectionReference users = FirebaseFirestore.instance.collection('users');
   Gender? _gender = Gender.male;
   @override
   Widget build(BuildContext context) {
@@ -124,16 +126,34 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     },
                   ),
                   firebaseUIButton(context, "Sign Up", () {
-                    FirebaseAuth.instance.createUserWithEmailAndPassword(
-                        email: _emailTextController.text,
-                        password: _passwordTextController.text);
-                    FirebaseFirestore.instance.collection('users').add({
-                      'name': _nameTextController.text.trim(),
-                      'email': _emailTextController.text.trim(),
-                      'gender': _gender.toString().split('.').last,
-                      'birthdate': _dateTextController.text.trim(),
-                    });
-                  })
+                    try {
+                      FirebaseAuth.instance
+                          .createUserWithEmailAndPassword(
+                          email: _emailTextController.text,
+                          password: _passwordTextController.text)
+                          .then((value) {
+                        if(value!=null && value.user != null){
+                          FirebaseFirestore.instance.collection('users').add({
+                            'name': _nameTextController.text.trim(),
+                            'email': _emailTextController.text.trim(),
+                            'gender': _gender.toString().split('.').last,
+                            'birthdate': _dateTextController.text.trim(),
+                            'uid':value.user!.uid,
+                          });
+                          final successMsg = SnackBar(
+                              content: const Text('Yay! User Created!')
+                          );
+                          ScaffoldMessenger.of(context).showSnackBar(successMsg);
+                        }else{
+                          throw Error();
+                        }
+                      });
+                    } catch (err) {
+                      print(err.toString);
+                    }
+
+                  }
+                  )
                 ],
               )),
         ),

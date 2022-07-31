@@ -37,6 +37,14 @@ dependencies:
   cloud_firestore: ^3.1.18
   firebase_auth: ^3.3.4
   intl: ^0.17.0
+  faker: ^2.0.0
+  helpers: ^1.1.4
+  jiffy: ^5.0.0
+  cached_network_image: ^3.2.1
+  stream_chat_flutter_core: ^4.4.0
+  logger: ^1.1.0
+  cupertino_list_tile: ^0.2.1
+  flutter_chat_bubble: ^2.0.0
 
 dev_dependencies:
   flutter_test:

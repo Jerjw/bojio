@@ -2,7 +2,6 @@ import 'package:bojio/screens/chat_screen.dart';
 import 'package:bojio/screens/events_screen.dart';
 import 'package:bojio/screens/notif_screen.dart';
 import 'package:bojio/screens/profile_screen.dart';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -48,6 +47,7 @@ class _HomeScreenState extends State<HomeScreen> {
             label: 'Chat',
             backgroundColor: Colors.red,
           ),
+
           BottomNavigationBarItem(
             icon: Icon(Icons.event_available),
             label: 'Notifications',
@@ -61,5 +61,8 @@ class _HomeScreenState extends State<HomeScreen> {
         ],
       ),
     );
+  }
+
+  void onPressed() {
   }
 }
