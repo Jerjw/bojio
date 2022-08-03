@@ -129,31 +129,32 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     try {
                       FirebaseAuth.instance
                           .createUserWithEmailAndPassword(
-                          email: _emailTextController.text,
-                          password: _passwordTextController.text)
+                              email: _emailTextController.text,
+                              password: _passwordTextController.text)
                           .then((value) {
-                        if(value!=null && value.user != null){
-                          FirebaseFirestore.instance.collection('users').add({
+                        if (value != null && value.user != null) {
+                          FirebaseFirestore.instance
+                              .collection('users')
+                              .doc(value.user!.uid)
+                              .set({
                             'name': _nameTextController.text.trim(),
                             'email': _emailTextController.text.trim(),
                             'gender': _gender.toString().split('.').last,
                             'birthdate': _dateTextController.text.trim(),
-                            'uid':value.user!.uid,
+                            'uid': value.user!.uid,
                           });
                           final successMsg = SnackBar(
-                              content: const Text('Yay! User Created!')
-                          );
-                          ScaffoldMessenger.of(context).showSnackBar(successMsg);
-                        }else{
+                              content: const Text('Yay! User Created!'));
+                          ScaffoldMessenger.of(context)
+                              .showSnackBar(successMsg);
+                        } else {
                           throw Error();
                         }
                       });
                     } catch (err) {
                       print(err.toString);
                     }
-
-                  }
-                  )
+                  })
                 ],
               )),
         ),

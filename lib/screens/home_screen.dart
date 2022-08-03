@@ -1,3 +1,4 @@
+import 'package:bojio/screens/add_event.dart';
 import 'package:bojio/screens/chat_screen.dart';
 import 'package:bojio/screens/events_screen.dart';
 import 'package:bojio/screens/notif_screen.dart';
