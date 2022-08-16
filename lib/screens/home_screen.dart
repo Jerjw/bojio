@@ -29,6 +29,22 @@ class _HomeScreenState extends State<HomeScreen> {
       extendBodyBehindAppBar: false,
       appBar: AppBar(
         title: Text('Bojio'),
+        actions: <Widget>[
+          Padding(
+              padding: EdgeInsets.only(right: 20.0),
+              child: GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const AddEventPage()));
+                },
+                child: Icon(
+                  Icons.add,
+                  size: 30.0,
+                ),
+              )),
+        ],
       ),
       body: IndexedStack(
         index: currentIndex,
@@ -48,7 +64,6 @@ class _HomeScreenState extends State<HomeScreen> {
             label: 'Chat',
             backgroundColor: Colors.red,
           ),
-
           BottomNavigationBarItem(
             icon: Icon(Icons.event_available),
             label: 'Notifications',
@@ -64,6 +79,5 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  void onPressed() {
-  }
+  void onPressed() {}
 }

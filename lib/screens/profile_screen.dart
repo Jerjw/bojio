@@ -14,8 +14,7 @@ class ProfileScreen extends StatefulWidget {
 class _ProfileScreenState extends State<ProfileScreen> {
   final user = FirebaseAuth.instance.currentUser;
 
-  final users =
-      FirebaseFirestore.instance.collection('users').doc(uid).snapshots();
+  final users = FirebaseFirestore.instance.collection('users').doc(uid).get();
   @override
   Widget build(BuildContext context) {
     return Scaffold(

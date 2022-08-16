@@ -15,7 +15,7 @@ class AddEventPage extends StatefulWidget {
 }
 
 class _AddEventPageState extends State<AddEventPage> {
-  final _formKey = GlobalKey<FormState>();
+  final user = FirebaseAuth.instance.currentUser;
 
   var title = '';
   var description = '';
@@ -54,217 +54,217 @@ class _AddEventPageState extends State<AddEventPage> {
     final minutes = dateTime.minute.toString().padLeft(2, '0');
 
     return Scaffold(
+        appBar: AppBar(
+          title: Text("Add Event"),
+        ),
         body: SingleChildScrollView(
             child: Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        const SizedBox(width: double.infinity),
-        const SizedBox(height: 30),
-        const SizedBox(
-          width: 300,
-          child: Text(
-            'Event Title',
-            style: TextStyle(fontSize: 18),
-          ),
-        ),
-        const SizedBox(height: 5),
-        SizedBox(
-          width: 300,
-          height: 45,
-          child: TextField(
-            controller: _titleTextController,
-            decoration: const InputDecoration(
-                border: OutlineInputBorder(),
-                hintText: "Enter Event Title",
-                labelStyle: TextStyle()),
-            onChanged: (value) {
-              title = value;
-            },
-          ),
-        ),
-        const SizedBox(height: 30),
-        const SizedBox(
-          width: 300,
-          child: Text(
-            'Event Description',
-            style: TextStyle(fontSize: 18),
-          ),
-        ),
-        const SizedBox(height: 5),
-        SizedBox(
-          width: 300,
-          height: 45,
-          child: TextField(
-            controller: _descriptionTextController,
-            decoration: const InputDecoration(
-                border: OutlineInputBorder(),
-                hintText: "Enter Event Descrption",
-                labelStyle: TextStyle()),
-            onChanged: (value) {
-              description = value;
-            },
-          ),
-        ),
-        const SizedBox(height: 30),
-        const SizedBox(
-          width: 300,
-          child: Text(
-            'Select Date',
-            style: TextStyle(fontSize: 18),
-          ),
-        ),
-        const SizedBox(height: 5),
-        SizedBox(
-          width: 300,
-          height: 45,
-          child: TextField(
-            controller: _date,
-            decoration: const InputDecoration(
-                border: OutlineInputBorder(),
-                hintText: "Select Date",
-                labelStyle: TextStyle()),
-            onTap: () async {
-              DateTime? pickedDate = await showDatePicker(
-                  context: context,
-                  initialDate: DateTime.now(),
-                  firstDate: DateTime(1900),
-                  lastDate: DateTime(2101));
-
-              if (pickedDate != null) {
-                setState(() {
-                  _date.text = DateFormat('yyyy-MM-dd').format(pickedDate);
-                });
-              }
-            },
-            onChanged: (value) {
-              date = value;
-            },
-          ),
-        ),
-        const SizedBox(height: 30),
-        const SizedBox(
-          width: 300,
-          child: Text(
-            'Select Time',
-            style: TextStyle(fontSize: 18),
-          ),
-        ),
-        const SizedBox(height: 5),
-        SizedBox(
-          width: 300,
-          height: 45,
-          child: TextField(
-            controller: _time,
-            decoration: const InputDecoration(
-                border: OutlineInputBorder(),
-                hintText: "Select Date",
-                labelStyle: TextStyle()),
-            onTap: () async {
-              TimeOfDay? pickedTime = await showTimePicker(
-                  context: context,
-                  initialTime:
-                      TimeOfDay(hour: dateTime.hour, minute: dateTime.minute));
-
-              if (pickedTime != null) {
-                setState(() {
-                  _time.text = '${pickedTime.hour} : ${pickedTime.minute}';
-                });
-              }
-            },
-            onChanged: (value) {
-              time = value;
-            },
-          ),
-        ),
-        const SizedBox(height: 30),
-        const SizedBox(
-          width: 300,
-          child: Text(
-            'Number of Pax',
-            style: TextStyle(fontSize: 18),
-          ),
-        ),
-        const SizedBox(height: 5),
-        SizedBox(
-          width: 300,
-          height: 45,
-          child: TextField(
-            controller: _numPaxTextController,
-            decoration: InputDecoration(
-                border: OutlineInputBorder(),
-                hintText: "Enter Number of Pax",
-                labelStyle: TextStyle()),
-          ),
-        ),
-        const SizedBox(height: 30),
-        const SizedBox(
-          width: 300,
-          child: Text(
-            'Select Image',
-            style: TextStyle(fontSize: 18),
-          ),
-        ),
-        SizedBox(
-          child: Column(children: [
-            if (imagefile != null)
-              Image.file(
-                imagefile!,
-                width: 250,
-                height: 250,
-                fit: BoxFit.cover,
-              )
-            else
-              Image.asset('assets/imageAdd.png'),
-          ]),
-        ),
-        const SizedBox(height: 5),
-        SizedBox(
-          width: 300,
-          height: 45,
-          child: ElevatedButton.icon(
-            onPressed: () async {
-              chooseImage(ImageSource.gallery);
-            },
-            icon: const Icon(Icons.image),
-            label: const Text('Choose From Gallery'),
-          ),
-        ),
-        const SizedBox(height: 30),
-        SizedBox(
-          width: 300,
-          height: 45,
-          child: ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              onPrimary: Colors.white,
-              primary: Colors.purple,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const SizedBox(width: double.infinity),
+            const SizedBox(height: 30),
+            const SizedBox(
+              width: 300,
+              child: Text(
+                'Event Title',
+                style: TextStyle(fontSize: 18),
+              ),
             ),
-            onPressed: () async {
-              FirebaseFirestore.instance.collection('events').add({
-                'description': _descriptionTextController.text.trim(),
-                'title': _titleTextController.text.trim(),
-                'date': _date.text.trim(),
-                'time': _time.text.trim(),
-                'numofpax': _numPaxTextController.text.trim()
-              });
+            const SizedBox(height: 5),
+            SizedBox(
+              width: 300,
+              height: 45,
+              child: TextField(
+                controller: _titleTextController,
+                decoration: const InputDecoration(
+                    border: OutlineInputBorder(),
+                    hintText: "Enter Event Title",
+                    labelStyle: TextStyle()),
+                onChanged: (value) {
+                  title = value;
+                },
+              ),
+            ),
+            const SizedBox(height: 30),
+            const SizedBox(
+              width: 300,
+              child: Text(
+                'Event Description',
+                style: TextStyle(fontSize: 18),
+              ),
+            ),
+            const SizedBox(height: 5),
+            SizedBox(
+              width: 300,
+              height: 45,
+              child: TextField(
+                controller: _descriptionTextController,
+                decoration: const InputDecoration(
+                    border: OutlineInputBorder(),
+                    hintText: "Enter Event Descrption",
+                    labelStyle: TextStyle()),
+                onChanged: (value) {
+                  description = value;
+                },
+              ),
+            ),
+            const SizedBox(height: 30),
+            const SizedBox(
+              width: 300,
+              child: Text(
+                'Select Date',
+                style: TextStyle(fontSize: 18),
+              ),
+            ),
+            const SizedBox(height: 5),
+            SizedBox(
+              width: 300,
+              height: 45,
+              child: TextField(
+                controller: _date,
+                decoration: const InputDecoration(
+                    border: OutlineInputBorder(),
+                    hintText: "Select Date",
+                    labelStyle: TextStyle()),
+                onTap: () async {
+                  DateTime? pickedDate = await showDatePicker(
+                      context: context,
+                      initialDate: DateTime.now(),
+                      firstDate: DateTime(1900),
+                      lastDate: DateTime(2101));
 
-              if (_formKey.currentState!.validate()) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
-                    content: Text("Sending Data to Cloud Firestore"),
-                  ),
-                );
-                // events
-                //     .add({'title': title, 'description': description})
-                //     .then((value) => print('Events Added'))
-                //     .catchError(
-                //         (error) => print('Failed to add event: $error'));
-              }
-            },
-            child: Text(buttonName),
-          ),
-        ),
-      ],
-    )));
+                  if (pickedDate != null) {
+                    setState(() {
+                      _date.text = DateFormat('yyyy-MM-dd').format(pickedDate);
+                    });
+                  }
+                },
+                onChanged: (value) {
+                  date = value;
+                },
+              ),
+            ),
+            const SizedBox(height: 30),
+            const SizedBox(
+              width: 300,
+              child: Text(
+                'Select Time',
+                style: TextStyle(fontSize: 18),
+              ),
+            ),
+            const SizedBox(height: 5),
+            SizedBox(
+              width: 300,
+              height: 45,
+              child: TextField(
+                controller: _time,
+                decoration: const InputDecoration(
+                    border: OutlineInputBorder(),
+                    hintText: "Select Date",
+                    labelStyle: TextStyle()),
+                onTap: () async {
+                  TimeOfDay? pickedTime = await showTimePicker(
+                      context: context,
+                      initialTime: TimeOfDay(
+                          hour: dateTime.hour, minute: dateTime.minute));
+
+                  if (pickedTime != null) {
+                    setState(() {
+                      _time.text = '${pickedTime.hour} : ${pickedTime.minute}';
+                    });
+                  }
+                },
+                onChanged: (value) {
+                  time = value;
+                },
+              ),
+            ),
+            const SizedBox(height: 30),
+            const SizedBox(
+              width: 300,
+              child: Text(
+                'Number of Pax',
+                style: TextStyle(fontSize: 18),
+              ),
+            ),
+            const SizedBox(height: 5),
+            SizedBox(
+              width: 300,
+              height: 45,
+              child: TextField(
+                controller: _numPaxTextController,
+                decoration: InputDecoration(
+                    border: OutlineInputBorder(),
+                    hintText: "Enter Number of Pax",
+                    labelStyle: TextStyle()),
+              ),
+            ),
+            const SizedBox(height: 30),
+            const SizedBox(
+              width: 300,
+              child: Text(
+                'Select Image',
+                style: TextStyle(fontSize: 18),
+              ),
+            ),
+            SizedBox(
+              child: Column(children: [
+                if (imagefile != null)
+                  Image.file(
+                    imagefile!,
+                    width: 250,
+                    height: 250,
+                    fit: BoxFit.cover,
+                  )
+                else
+                  Image.asset('assets/imageAdd.png'),
+              ]),
+            ),
+            const SizedBox(height: 5),
+            SizedBox(
+              width: 300,
+              height: 45,
+              child: ElevatedButton.icon(
+                onPressed: () async {
+                  chooseImage(ImageSource.gallery);
+                },
+                icon: const Icon(Icons.image),
+                label: const Text('Choose From Gallery'),
+              ),
+            ),
+            const SizedBox(height: 30),
+            SizedBox(
+              width: 300,
+              height: 45,
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  onPrimary: Colors.white,
+                  primary: Colors.purple,
+                ),
+                onPressed: () async {
+                  FirebaseFirestore.instance
+                      .collection('events')
+                      .doc(_titleTextController.text.trim())
+                      .set({
+                    'description': _descriptionTextController.text.trim(),
+                    'title': _titleTextController.text.trim(),
+                    'date': _date.text.trim(),
+                    'time': _time.text.trim(),
+                    'numofpax': _numPaxTextController.text.trim(),
+                    'host': user!.uid.toString(),
+                    'participants': [],
+                  });
+
+                  final successMsg =
+                      SnackBar(content: const Text('Event added successfully'));
+                  ScaffoldMessenger.of(context).showSnackBar(successMsg);
+                  Navigator.pop(context);
+                },
+                child: Text(buttonName),
+              ),
+            ),
+          ],
+        )));
   }
 
   Future<DateTime?> pickDate() => showDatePicker(

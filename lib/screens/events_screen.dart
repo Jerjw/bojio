@@ -4,6 +4,7 @@ import 'package:bojio/screens/notif_screen.dart';
 //import 'package:bojio/screens/post_screen.dart';
 import 'package:bojio/screens/profile_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:bojio/screens/detail_screen.dart';
 
 class EventsScreen extends StatefulWidget {
   const EventsScreen({Key? key}) : super(key: key);
@@ -13,16 +14,10 @@ class EventsScreen extends StatefulWidget {
 }
 
 class _EventsScreenState extends State<EventsScreen> {
+  late DocumentSnapshot post;
   final Stream<QuerySnapshot> events =
       FirebaseFirestore.instance.collection('events').snapshots();
 
-  int currentIndex = 0;
-  final screens = [
-    const EventsScreen(),
-    ChatScreen(),
-    const NotifsScreen(),
-    const ProfileScreen(),
-  ];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -31,39 +26,6 @@ class _EventsScreenState extends State<EventsScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Row(
-            //   mainAxisAlignment: MainAxisAlignment.spaceAround,
-            //   children: [
-            //     GestureDetector(
-            //         child: const Text(
-            //           'Joined Events',
-            //           style: TextStyle(
-            //             shadows: [
-            //               Shadow(color: Colors.black, offset: Offset(0, -5))
-            //             ],
-            //             color: Colors.transparent,
-            //             decoration: TextDecoration.underline,
-            //             decorationColor: Colors.blue,
-            //             decorationThickness: 4,
-            //             fontSize: 20,
-            //           ),
-            //         ),
-            //         onTap: () {
-            //           Navigator.of(context).pushReplacement(MaterialPageRoute(
-            //               builder: (context) => const EventsScreen()));
-            //         }),
-            //     GestureDetector(
-            //         child: const Text(
-            //           'Your Post',
-            //           style:
-            //               TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
-            //         ),
-            //         onTap: () {
-            //           Navigator.of(context).pushReplacement(MaterialPageRoute(
-            //               builder: (context) => const PostScreen()));
-            //         }),
-            //   ],
-            // ),
             Container(
               height: 630,
               width: 800,
@@ -88,7 +50,12 @@ class _EventsScreenState extends State<EventsScreen> {
                       itemBuilder: (context, index) {
                         return Card(
                           child: ListTile(
-                            onTap: () {},
+                            onTap: () => Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => DetailScreen(
+                                          post: data.docs[index],
+                                        ))),
                             leading: const FlutterLogo(size: 100.0), // Image
                             title:
                                 Text('${data.docs[index]['title']}'), // Title

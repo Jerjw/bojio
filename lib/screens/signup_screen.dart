@@ -147,6 +147,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               content: const Text('Yay! User Created!'));
                           ScaffoldMessenger.of(context)
                               .showSnackBar(successMsg);
+                          Navigator.pop(context);
                         } else {
                           throw Error();
                         }
