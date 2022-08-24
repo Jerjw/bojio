@@ -49,10 +49,36 @@ class _LoginScreenState extends State<LoginScreen> {
                   height: 5,
                 ),
                 forgetPassword(context),
-                firebaseUIButton(context, "Sign In", () {
-                  FirebaseAuth.instance.signInWithEmailAndPassword(
-                      email: _emailTextController.text.trim(),
-                      password: _passwordTextController.text.trim());
+
+                firebaseUIButton(context, "Sign In", () async {
+                  try{
+                    await FirebaseAuth.instance.signInWithEmailAndPassword(
+                        email: _emailTextController.text.trim(),
+                        password: _passwordTextController.text.trim());
+                  } on FirebaseAuthException catch (e) {
+                    Widget okButton = TextButton(
+                      child: Text("Ok"),
+                      onPressed: () {
+                        Navigator.of(context, rootNavigator: true).pop('alert');
+                        },
+                    );
+                    AlertDialog alert = AlertDialog(
+                      title: Text("Incorrect Email or Password"),
+                      content: Text("Please check that you have entered the correct email or password!"),
+                      actions: [
+                        okButton,
+                      ],
+                    );
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return alert;
+                      },
+                    );
+
+                  }
+
+
                 }),
                 signUpOption()
               ],

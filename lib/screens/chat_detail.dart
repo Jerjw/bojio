@@ -19,11 +19,13 @@ class ChatDetail extends StatefulWidget {
 
 class _ChatDetailState extends State<ChatDetail> {
   CollectionReference chats = FirebaseFirestore.instance.collection('chats');
+
   final friendUid;
   final friendName;
   final currentUserId = FirebaseAuth.instance.currentUser?.uid;
   var chatDocId;
   var _textController = new TextEditingController();
+
   _ChatDetailState(this.friendUid, this.friendName);
   @override
   void initState() {
@@ -43,7 +45,6 @@ class _ChatDetailState extends State<ChatDetail> {
             chatDocId = querySnapshot.docs.single.id;
           });
 
-          print(chatDocId);
         } else {
           await chats.add({
             'users': {currentUserId: null, friendUid: null},
@@ -101,7 +102,8 @@ class _ChatDetailState extends State<ChatDetail> {
 
         if (snapshot.hasData) {
           var data;
-          return CupertinoPageScaffold(
+          return
+            CupertinoPageScaffold(
             navigationBar: CupertinoNavigationBar(
               middle: Text(friendName),
               trailing: CupertinoButton(
@@ -120,15 +122,13 @@ class _ChatDetailState extends State<ChatDetail> {
                       children: snapshot.data!.docs.map(
                             (DocumentSnapshot document) {
                           data = document.data()!;
-                          print(document.toString());
-                          print(data['msg']);
                           return Padding(
                             padding:
                             const EdgeInsets.symmetric(horizontal: 8.0),
                             child: ChatBubble(
                               clipper: ChatBubbleClipper6(
-                                nipSize: 0,
-                                radius: 0,
+                                nipSize: 8,
+                                radius: 10,
                                 type: isSender(data['uid'].toString())
                                     ? BubbleType.sendBubble
                                     : BubbleType.receiverBubble,
@@ -136,12 +136,11 @@ class _ChatDetailState extends State<ChatDetail> {
                               alignment: getAlignment(data['uid'].toString()),
                               margin: EdgeInsets.only(top: 20),
                               backGroundColor: isSender(data['uid'].toString())
-                                  ? Color(0xFF08C187)
+                                  ? Color(0xFF03D1EE)
                                   : Color(0xffE7E7ED),
                               child: Container(
                                 constraints: BoxConstraints(
-                                  maxWidth:
-                                  MediaQuery.of(context).size.width * 0.7,
+                                  maxWidth: MediaQuery.of(context).size.width * 0.7,
                                 ),
                                 child: Column(
                                   children: [
@@ -151,6 +150,8 @@ class _ChatDetailState extends State<ChatDetail> {
                                       children: [
                                         Text(data['msg'],
                                             style: TextStyle(
+                                                decoration: TextDecoration.none,
+                                                fontSize:15,
                                                 color: isSender(
                                                     data['uid'].toString())
                                                     ? Colors.white
@@ -163,13 +164,10 @@ class _ChatDetailState extends State<ChatDetail> {
                                       mainAxisAlignment: MainAxisAlignment.end,
                                       children: [
                                         Text(
-                                          data['createdOn'] == null
-                                              ? DateTime.now().toString()
-                                              : data['createdOn']
-                                              .toDate()
-                                              .toString(),
+                                          data['createdOn'] == null? DateTime.now().toString() : data['createdOn'].toDate().toString(),
                                           style: TextStyle(
-                                              fontSize: 10,
+                                              decoration: TextDecoration.none,
+                                              fontSize: 7,
                                               color: isSender(
                                                   data['uid'].toString())
                                                   ? Colors.white

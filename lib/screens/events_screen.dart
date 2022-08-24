@@ -37,7 +37,7 @@ class _EventsScreenState extends State<EventsScreen> {
                     AsyncSnapshot<QuerySnapshot> snapshot,
                   ) {
                     if (snapshot.hasError) {
-                      return const Text('Soething went wrong.');
+                      return const Text('Something went wrong.');
                     }
                     if (snapshot.connectionState == ConnectionState.waiting) {
                       return const Text('Loading');

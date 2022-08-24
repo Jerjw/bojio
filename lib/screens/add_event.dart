@@ -17,6 +17,8 @@ class AddEventPage extends StatefulWidget {
 class _AddEventPageState extends State<AddEventPage> {
   final user = FirebaseAuth.instance.currentUser;
 
+  var currentUsername = FirebaseAuth.instance.currentUser?.displayName;
+
   var title = '';
   var description = '';
   TextEditingController _descriptionTextController = TextEditingController();
@@ -242,6 +244,7 @@ class _AddEventPageState extends State<AddEventPage> {
                   primary: Colors.purple,
                 ),
                 onPressed: () async {
+
                   FirebaseFirestore.instance
                       .collection('events')
                       .doc(_titleTextController.text.trim())
@@ -252,7 +255,7 @@ class _AddEventPageState extends State<AddEventPage> {
                     'time': _time.text.trim(),
                     'numofpax': _numPaxTextController.text.trim(),
                     'host': user!.uid.toString(),
-                    'participants': [],
+                    'participants': [currentUsername],
                   });
 
                   final successMsg =
